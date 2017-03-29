@@ -1,0 +1,50 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>bean.properties</value>
+        </property>
+    </bean>
+
+    <bean id="firstDeveloper" class="bean.Developer">
+        <property name="name" value="${firstDeveloper.name}"/>
+        <property name="age" value="${firstDeveloper.age}"/>
+        <property name="experience" value="${firstDeveloper.experience}"/>
+        <property name="employmentHistory">
+            <list>
+                <value>${firstDeveloper.history1}</value>
+                <value>${firstDeveloper.history2}</value>
+                <value>${firstDeveloper.history3}</value>
+                <value>${firstDeveloper.history4}</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="teamLead" class="bean.TeamLead">
+        <constructor-arg name="projectName" value="${project.name}"/>
+        <constructor-arg name="developer" ref="firstDeveloper"/>
+        <constructor-arg name="managerLevel" value="5"/>
+    </bean>
+
+    <bean id="supportStaff" class="bean.SupportStaff">
+        <property name="supportName" value="${supportStaff.name}"/>
+        <lookup-method name="getStaffCount" bean="supportCount" />
+    </bean>
+
+    <bean id="supportCount" class="bean.SupportCount" scope="prototype"/>
+
+    <bean id="sayHello" class="bean.SayHello">
+        <property name="sayHelloTo" value="${say.hello.to}"/>
+        <replaced-method name="greeting" replacer="sayHi"/>
+    </bean>
+
+    <bean id="sayHi" class="bean.SayHi"/>
+
+    <bean id="beanLifecycleExample" class="bean.BeanLyfecycleExample" init-method="init" destroy-method="destroy" lazy-init="true">
+        <property name="beanName" value="${bean.example.name}"/>
+    </bean>
+
+</beans>
